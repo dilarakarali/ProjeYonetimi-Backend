@@ -1,3 +1,5 @@
+//projects tablosunu temsil eder. Bir projenin adı, bütçesi gibi bilgilerini ve o projede hangi çalışanların olduğunu tutar.
+
 package com.kolaysoft.project_management.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -5,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.math.BigDecimal;
+import java.math.BigDecimal;  //daha hassas işlemlerde
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
@@ -59,65 +61,3 @@ public class Project {
     }
 
 }
-
-
-
-
-
-
-//package com.kolaysoft.project_management.model;
-//
-//import jakarta.persistence.*;
-//import java.math.BigDecimal;  //daha hassas parasal işlemlerde
-//import java.time.LocalDate;
-//import java.util.HashSet;
-//import java.util.Set;
-//
-//@Entity
-//@Table(name = "projects")
-//public class Project {
-//
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private Long id;
-//
-//    private String projectName;
-//
-//    private String status;
-//    private BigDecimal budget;
-//    private LocalDate startDate;
-//    private LocalDate endDate;
-//
-//    @ManyToMany
-//    @JoinTable(
-//            name = "project_employees",
-//            joinColumns = @JoinColumn(name = "project_id"),
-//            inverseJoinColumns = @JoinColumn(name = "employee_id")
-//    )
-//    private Set<Employee> employees = new HashSet<>();
-//
-//    public Project() {}
-//
-//    public Project(String projectName, String status, BigDecimal budget, LocalDate startDate, LocalDate endDate) {
-//        this.projectName = projectName;
-//        this.status = status;
-//        this.budget = budget;
-//        this.startDate = startDate;
-//        this.endDate = endDate;
-//    }
-//
-//    public Long getId() {return id;}
-//    public void setId(Long id) {this.id = id;}
-//    public String getProjectName() {return projectName;}
-//    public void setProjectName(String projectName) {this.projectName = projectName;}
-//    public String getStatus() {return status;}
-//    public void setStatus(String status) {this.status = status;}
-//    public BigDecimal getBudget() {return budget;}
-//    public void setBudget(BigDecimal budget) {this.budget = budget;}
-//    public LocalDate getStartDate() {return startDate;}
-//    public void setStartDate(LocalDate startDate) {this.startDate = startDate;}
-//    public LocalDate getEndDate() {return endDate;}
-//    public void setEndDate(LocalDate endDate) {this.endDate = endDate;}
-//    public Set<Employee> getEmployees() {return employees;}
-//    public void setEmployees(Set<Employee> employees) {this.employees = employees;}
-//}

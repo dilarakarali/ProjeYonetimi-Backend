@@ -1,3 +1,5 @@
+//Token oluşturma, token'ı doğrulama ve tok
+
 package com.kolaysoft.project_management.security;
 
 import io.jsonwebtoken.*;
@@ -21,7 +23,7 @@ public class JwtTokenProvider {
 
     private final Key key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
 
-    // ✅ Token üret
+    //Token üret
     public String generateToken(Authentication authentication) {
         String username = authentication.getName();
 
@@ -41,7 +43,7 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    // ✅ Token geçerli mi?
+    // Token geçerli mi?
     public boolean validateToken(String token) {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
@@ -52,7 +54,7 @@ public class JwtTokenProvider {
         }
     }
 
-    // ✅ Token'dan kullanıcı adını al
+    // Token'dan kullanıcı adını al
     public String getUsernameFromToken(String token) {
         Claims claims = Jwts.parserBuilder()
                 .setSigningKey(key)
@@ -63,7 +65,7 @@ public class JwtTokenProvider {
         return claims.getSubject();
     }
 
-    // ✅ Token'dan roller alınabilir (isteğe bağlı)
+    // Token'dan roller alınabilir (isteğe bağlı)
     public String getRolesFromToken(String token) {
         Claims claims = Jwts.parserBuilder()
                 .setSigningKey(key)

@@ -16,9 +16,9 @@ public class ProjectDTO {
     private Long id;
     private String projectName;
     private String status;
-    //private BigDecimal budget;
-    //private LocalDate startDate;
-    //private LocalDate endDate;
+    private BigDecimal budget;
+    private LocalDate startDate;
+    private LocalDate endDate;
 
     // Bu projede hangi çalışanlar var?
     private List<String> employeeNames;

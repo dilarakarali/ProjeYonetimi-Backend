@@ -1,5 +1,8 @@
+//roles tablosunu temsil eder. Sadece rolün adını ("ROLE_ADMIN" gibi) tutar.
+
 package com.kolaysoft.project_management.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,6 +26,7 @@ public class Role {
 
 
     @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
+    @JsonBackReference
     private Set<Employee> employees = new HashSet<>();
 
     public Role(String name, boolean admin) {  // admini set et
@@ -30,56 +34,3 @@ public class Role {
         this.admin = admin;
     }
 }
-
-
-//package com.kolaysoft.project_management.entity;
-//
-//import jakarta.persistence.*;
-//import lombok.EqualsAndHashCode;
-//
-//@Entity  // Role sınıfını veritabanında tabloya dönüştürür
-//@Table(name = "roles")
-//@EqualsAndHashCode(exclude = "employees")
-//public class Role {
-//
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)  // Otomatik artan id
-//    private Long id;
-//
-//    private String username;  // Kullanıcı adı
-//    private boolean admin;    // Admin mi değil mi
-//
-//    // Boş constructor – Spring için gereklidir
-//    public Role() {
-//    }
-//
-//    // Parametreli constructor – hızlı nesne oluşturmak için
-//    public Role(String username, boolean admin) {
-//        this.username = username;
-//        this.admin = admin;
-//    }
-//
-//    // Getter – Setter metotları
-//    public Long getId() { return id; }
-//    public void setId(Long id) { this.id = id; }
-//
-//    public String getUsername() { return username; }
-//    public void setUsername(String username) { this.username = username; }
-//
-//    public boolean isAdmin() { return admin; }
-//    public void setAdmin(boolean admin) { this.admin = admin; }
-//
-//    @Override  //veritabanında ilişkiler tekrarlanmaz
-//    public boolean equals(Object o) {
-//        if (this == o) return true;
-//        if (!(o instanceof Role)) return false;
-//        Role role = (Role) o;
-//        return id != null && id.equals(role.getId());
-//    }
-//
-//    @Override
-//    public int hashCode() {
-//        return getClass().hashCode();
-//    }
-//
-//}

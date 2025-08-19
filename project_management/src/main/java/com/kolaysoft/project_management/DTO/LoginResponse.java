@@ -1,6 +1,6 @@
-package com.kolaysoft.project_management.DTO;
+//Backend'den frontend'e başarılı giriş sonrası kullanıcı adı, token ve rolleri taşır.
 
-//Giriş başarılı olunca geri dönecek bilgileri taşır.Genellikle JWT token , Kullanıcı adı ve Roller
+package com.kolaysoft.project_management.DTO;
 
 import java.util.List;
 
@@ -18,7 +18,6 @@ public class LoginResponse {
         this.roles = roles;
     }
 
-    // Getter ve Setter'lar
     public String getUsername() {
         return username;
     }

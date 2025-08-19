@@ -1,5 +1,6 @@
+//Frontend'den backend'e sadece kullanıcı adı ve şifreyi taşır.
+
 package com.kolaysoft.project_management.DTO;
-//Kullanıcıdan alınacak giriş bilgilerini taşır username ve password
 
 public class LoginRequest {
     private String username;
@@ -13,7 +14,6 @@ public class LoginRequest {
         this.password = password;
     }
 
-    // Getter ve Setter'lar
     public String getUsername() {
         return username;
     }

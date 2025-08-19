@@ -1,3 +1,9 @@
+//Controller paketi: Frontend'den gelen API isteklerini (/api/...) ilk karşılayan sınıflardır.
+// Gelen isteğe göre ilgili Service katmanını çağırırlar.
+//AuthController.java: Sadece kullanıcı girişi (/login) ile ilgilenir.
+// Kullanıcı adı ve şifre doğruysa, bir JWT (JSON Web Token) üretir ve frontend'e gönderir.
+
+
 package com.kolaysoft.project_management.controller;
 
 import com.kolaysoft.project_management.DTO.LoginRequest;

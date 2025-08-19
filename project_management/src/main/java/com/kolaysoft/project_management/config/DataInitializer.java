@@ -1,3 +1,9 @@
+//Config paket: uygulama ilk çalıştığında yapılması gereken ayarları ve güvenlik kurallarını içerir.
+// Uygulama ayağa kalkarken sadece bir kez çalışır. Görevi, veritabanını kontrol edip temel verilerin yerinde olduğundan emin olmaktır.
+//"ROLE_ADMIN" ve "ROLE_EMPLOYEE" adında rollerin olup olmadığını kontrol eder, yoksa oluşturur.
+//"admin" adında bir kullanıcı olup olmadığını kontrol eder, yoksa bu kullanıcıyı oluşturur ve ona "ROLE_ADMIN" rolünü atar.
+// Bu sayede sisteme ilk giriş yapacak bir yönetici her zaman olur.
+
 package com.kolaysoft.project_management.config;
 
 import com.kolaysoft.project_management.entity.Employee;

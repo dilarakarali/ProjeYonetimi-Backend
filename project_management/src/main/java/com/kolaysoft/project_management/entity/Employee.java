@@ -1,6 +1,13 @@
+//Entity paketi: veritabanındaki tabloları temsil eder.
+// JPA (Java Persistence API) sayesinde bu sınıflar üzerinden veritabanı işlemleri yapılır.
+//Employee.java: employees tablosunu temsil eder. Bir çalışanın adı, soyadı gibi temel bilgilerini ve hangi projelere ve rollere sahip olduğu bilgisini tutar.
+// Spring Security için UserDetails arayüzünü uygular.
+
+
 package com.kolaysoft.project_management.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -39,6 +46,7 @@ public class Employee implements UserDetails {  // BURAYA EKLENDİ
             joinColumns = @JoinColumn(name = "employee_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
+    @JsonManagedReference
     private Set<Role> roles = new HashSet<>();
 
     @ManyToMany(mappedBy = "employees")
@@ -55,13 +63,12 @@ public class Employee implements UserDetails {  // BURAYA EKLENDİ
     }
 
     @Override
-    public String getPassword() {   // UserDetails zorunlu metodu
-        return password;
-    }
-
-    @Override
     public String getUsername() {   // UserDetails zorunlu metodu
         return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     @Override public boolean isAccountNonExpired() { return true; }

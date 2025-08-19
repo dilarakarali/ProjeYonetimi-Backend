@@ -1,3 +1,5 @@
+// Rol bazlı erişimi test etmek için basit bir endpoint içerir.
+
 package com.kolaysoft.project_management.controller;
 
 import com.kolaysoft.project_management.entity.Employee;
@@ -38,53 +40,3 @@ public class RoleController {
     }
 
 }
-
-
-
-//package com.kolaysoft.project_management.controller;
-//
-//import com.kolaysoft.project_management.entity.Role;
-//import com.kolaysoft.project_management.service.RoleService;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.http.ResponseEntity;
-//import org.springframework.web.bind.annotation.*;
-//
-//import java.util.List;
-//
-//@RestController
-//@RequestMapping("/api/roles")  // Postman'de kullanılacak temel URL
-//public class RoleController {
-//
-//    @Autowired
-//    private RoleService roleService;
-//
-//    // GET – Tüm rolleri getir
-//    @GetMapping
-//    public List<Role> getAllRoles() {
-//        return roleService.getAllRoles();
-//    }
-//
-//    // POST – Yeni rol oluştur
-//    @PostMapping
-//    public Role createRole(@RequestBody Role role) {
-//        return roleService.createRole(role);
-//    }
-//
-//    // PUT – Mevcut rolü güncelle
-//    @PutMapping("/{id}")
-//    public ResponseEntity<Role> updateRole(@PathVariable Long id, @RequestBody Role roleDetails) {
-//        return roleService.updateRole(id, roleDetails)
-//                .map(ResponseEntity::ok)
-//                .orElse(ResponseEntity.notFound().build());
-//    }
-//
-//    // DELETE – Rolü sil
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity<Void> deleteRole(@PathVariable Long id) {
-//        if (roleService.deleteRole(id)) {
-//            return ResponseEntity.noContent().build();
-//        } else {
-//            return ResponseEntity.notFound().build();
-//        }
-//    }
-//}

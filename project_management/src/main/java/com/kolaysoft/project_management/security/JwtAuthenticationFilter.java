@@ -1,3 +1,8 @@
+//Security paketi:Kullanıcı kimliğini doğrulamak için kullanılan JWT (token) mantığını yönetir.
+//JwtAuthenticationFilter.java: Login sayfası hariç gelen her isteği kontrol eden bir filtredir.
+//İstek başlığında (Authorization: Bearer ...) geçerli bir token var mı diye bakar.
+//Varsa, kullanıcı bilgilerini alıp o istek için "Bu kullanıcı giriş yapmıştır" diye sisteme bildirir.
+
 package com.kolaysoft.project_management.security;
 
 import com.kolaysoft.project_management.repository.EmployeeRepository;

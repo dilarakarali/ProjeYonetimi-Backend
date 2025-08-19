@@ -7,14 +7,6 @@ import java.util.Optional;
 
 public interface RoleRepository extends JpaRepository<Role, Long> {
 
-
-    Optional<Role> findByName(String roleAdmin);
+    Optional<Role> findByName(String name);
 }
-
-
-// Spring Data JPA, CRUD metotlarını otomatik sağlar
-//HQL:sınıfın ismi ve değişken isimleri kullanarak sorgular yazılır
-//SQL:tablo ismi ve tablo içindeki kolon isimleri kullanarak sorgular yazılır
-//@Query(value="from(Sqlde select*from) Employee" , nativeQuery=false(Sqlde true)
-//List<Employee>findAllEmployees();
 
