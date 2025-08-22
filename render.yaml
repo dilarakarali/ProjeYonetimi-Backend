@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: proje-yonetimi-backend
+    env: java
+    region: frankfurt
+    plan: free
+    rootDir: project_management
+    buildCommand: "chmod +x mvnw && ./mvnw clean package -DskipTests"
+    startCommand: "java -jar target/projeyonetimsistemi-0.0.1-SNAPSHOT.jar"
+    envVars:
+      - key: JAVA_VERSION
+        value: 24
+      - key: SPRING_JPA_HIBERNATE_DDL_AUTO
+        value: update
+      - key: SPRING_DATASOURCE_URL
+        fromDatabase:
+          name: railway-postgres-db  # Buraya Render'da oluşturacağımız veritabanının adını yazacağız
+          property: connectionString
+      - key: SPRING_DATASOURCE_USERNAME
+        fromDatabase:
+          name: railway-postgres-db  # Buraya Render'da oluşturacağımız veritabanının adını yazacağız
+          property: user
+      - key: SPRING_DATASOURCE_PASSWORD
+        fromDatabase:
+          name: railway-postgres-db  # Buraya oluşturacağımız veritabanının adını yazacağız
+          property: password
