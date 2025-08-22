@@ -28,7 +28,7 @@ WORKDIR /app
 COPY --from=builder /app/target/projeyonetimsistemi-0.0.1-SNAPSHOT.jar app.jar
 
 # Uygulamanın çalışacağı portu belirt
-EXPOSE 8080
+EXPOSE 8081
 
 # Uygulamayı başlat
 ENTRYPOINT ["java", "-jar", "app.jar"]
