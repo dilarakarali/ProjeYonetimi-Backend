@@ -17,8 +17,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
@@ -52,32 +50,22 @@ public class SecurityConfig {
         return authConfig.getAuthenticationManager();
     }
 
-    // CORS ayarları doğru, buna dokunmuyoruz. Sadece bir satır değişecek.
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:5173", "https://projeyonetimifrontend.onrender.com"));
-        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(List.of("*"));
-        configuration.setAllowCredentials(true);
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        // --- DEĞİŞİKLİK BURADA ---
-        // CORS kurallarını sadece "/api/" ile başlayan yollara uygula
-        source.registerCorsConfiguration("/api/**", configuration);
-        return source;
-    }
-
+    // --- TÜM SİHİR BURADA ---
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                // CORS'u etkinleştir ve yukarıdaki Bean'i kullan
-                .cors(withDefaults())
-                // CSRF'i devre dışı bırak (JWT için standart)
+                // CORS yapılandırmasını DOĞRUDAN zincirin içine yazıyoruz. Bu en garantili yöntemdir.
+                .cors(cors -> cors.configurationSource(request -> {
+                    CorsConfiguration configuration = new CorsConfiguration();
+                    configuration.setAllowedOrigins(List.of("https://projeyonetimifrontend.onrender.com", "http://localhost:5173"));
+                    configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+                    configuration.setAllowedHeaders(List.of("*"));
+                    configuration.setAllowCredentials(true);
+                    return configuration;
+                }))
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        // API Yolları İçin Kurallar
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/projects/my-assignments").hasAnyRole("ADMIN", "EMPLOYEE")
                         .requestMatchers("/api/projects/**").hasRole("ADMIN")
@@ -88,8 +76,10 @@ public class SecurityConfig {
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
-}
 
+    // Artık ayrı bir CorsConfigurationSource Bean'ine ihtiyacımız kalmadı.
+    // Her şeyi yukarıda hallettik.
+}
 
 //package com.kolaysoft.project_management.config;
 //
