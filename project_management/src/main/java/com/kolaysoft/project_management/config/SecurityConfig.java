@@ -4,6 +4,7 @@ import com.kolaysoft.project_management.repository.EmployeeRepository;
 import com.kolaysoft.project_management.security.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -35,7 +36,6 @@ public class SecurityConfig {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
     }
 
-    // Bu Bean'ler doğru, bunlara dokunmuyoruz.
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> employeeRepository.findByUsername(username)
@@ -52,7 +52,7 @@ public class SecurityConfig {
         return authConfig.getAuthenticationManager();
     }
 
-    // CORS ayarları da doğru, buna da dokunmuyoruz.
+    // CORS ayarları doğru, buna dokunmuyoruz. Sadece bir satır değişecek.
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
@@ -60,36 +60,35 @@ public class SecurityConfig {
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
+        // --- DEĞİŞİKLİK BURADA ---
+        // CORS kurallarını sadece "/api/" ile başlayan yollara uygula
+        source.registerCorsConfiguration("/api/**", configuration);
         return source;
     }
 
-    // --- ASIL DEĞİŞİKLİK BURADA: GÜVENLİK FİLTRE ZİNCİRİ ---
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .cors(withDefaults()) // CORS ayarlarını en başa alıyoruz.
-                .csrf(AbstractHttpConfigurer::disable) // CSRF'i devre dışı bırakıyoruz.
+                // CORS'u etkinleştir ve yukarıdaki Bean'i kullan
+                .cors(withDefaults())
+                // CSRF'i devre dışı bırak (JWT için standart)
+                .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        // ÖNEMLİ: API yollarının başına "/api" ekleyerek netleştiriyoruz.
+                        // API Yolları İçin Kurallar
                         .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/api/employees/**").hasRole("ADMIN")
-                        .requestMatchers("/api/projects/my-assignments").authenticated() // Sadece giriş yapmış olması yeterli
+                        .requestMatchers(HttpMethod.GET, "/api/projects/my-assignments").hasAnyRole("ADMIN", "EMPLOYEE")
                         .requestMatchers("/api/projects/**").hasRole("ADMIN")
-                        .requestMatchers("/api/assignments/**").hasRole("ADMIN")
-                        // Geri kalan TÜM "/api/" istekleri için kimlik doğrulaması iste
-                        .requestMatchers("/api/**").authenticated()
-                        // "/api/" ile başlamayan diğer tüm isteklere (frontend yönlendirmeleri gibi) izin ver
-                        .anyRequest().permitAll()
-                )
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                        .requestMatchers("/api/employees/**").hasRole("ADMIN")
+                        .anyRequest().authenticated()
+                );
 
+        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 }
-
 
 
 //package com.kolaysoft.project_management.config;
@@ -184,7 +183,7 @@ public class SecurityConfig {
 //        return source;
 //    }
 //}
-
+//
 
 
 ////Projenin güvenlik merkezidir. Kimin nereye erişebileceğini tanımlar.
